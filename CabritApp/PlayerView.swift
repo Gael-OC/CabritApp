@@ -84,7 +84,7 @@ struct AVPlayerViewRepresentable: NSViewRepresentable {
 
         func inhibitScreenSleep() {
             guard !sleepAssertionActive else { return }
-            let reason = "IPTV video playback in progress" as CFString
+            let reason = "CabritApp video playback in progress" as CFString
             let success = IOPMAssertionCreateWithName(
                 kIOPMAssertionTypePreventUserIdleDisplaySleep as CFString,
                 IOPMAssertionLevel(kIOPMAssertionLevelOn),

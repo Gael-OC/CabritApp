@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		9386C5F22F4EC50C00EB3975 /* IPTV probar inicio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IPTV probar inicio.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9386C5F22F4EC50C00EB3975 /* CabritApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CabritApp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		9386C5F42F4EC50C00EB3975 /* IPTV probar inicio */ = {
+		9386C5F42F4EC50C00EB3975 /* CabritApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "IPTV probar inicio";
+			path = "CabritApp";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,7 +32,7 @@
 		9386C5E92F4EC50C00EB3975 = {
 			isa = PBXGroup;
 			children = (
-				9386C5F42F4EC50C00EB3975 /* IPTV probar inicio */,
+				9386C5F42F4EC50C00EB3975 /* CabritApp */,
 				9386C5F32F4EC50C00EB3975 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,7 +40,7 @@
 		9386C5F32F4EC50C00EB3975 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9386C5F22F4EC50C00EB3975 /* IPTV probar inicio.app */,
+				9386C5F22F4EC50C00EB3975 /* CabritApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9386C5F12F4EC50C00EB3975 /* IPTV probar inicio */ = {
+		9386C5F12F4EC50C00EB3975 /* CabritApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9386C5FD2F4EC50D00EB3975 /* Build configuration list for PBXNativeTarget "IPTV probar inicio" */;
+			buildConfigurationList = 9386C5FD2F4EC50D00EB3975 /* Build configuration list for PBXNativeTarget "CabritApp" */;
 			buildPhases = (
 				9386C5EE2F4EC50C00EB3975 /* Sources */,
 				9386C5EF2F4EC50C00EB3975 /* Frameworks */,
@@ -61,13 +61,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				9386C5F42F4EC50C00EB3975 /* IPTV probar inicio */,
+				9386C5F42F4EC50C00EB3975 /* CabritApp */,
 			);
-			name = "IPTV probar inicio";
+			name = "CabritApp";
 			packageProductDependencies = (
 			);
-			productName = "IPTV probar inicio";
-			productReference = 9386C5F22F4EC50C00EB3975 /* IPTV probar inicio.app */;
+			productName = "CabritApp";
+			productReference = 9386C5F22F4EC50C00EB3975 /* CabritApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9386C5ED2F4EC50C00EB3975 /* Build configuration list for PBXProject "IPTV probar inicio" */;
+			buildConfigurationList = 9386C5ED2F4EC50C00EB3975 /* Build configuration list for PBXProject "CabritApp" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -99,7 +99,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9386C5F12F4EC50C00EB3975 /* IPTV probar inicio */,
+				9386C5F12F4EC50C00EB3975 /* CabritApp */,
 			);
 		};
 /* End PBXProject section */
@@ -248,7 +248,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "IPTV probar inicio/IPTV probar inicio.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "CabritApp/CabritApp.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -256,7 +256,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "IPTV-probar-inicio-Info.plist";
+				INFOPLIST_FILE = "CabritApp-Info.plist";
 				INFOPLIST_KEY_NSAppTransportSecurity_NSAllowsArbitraryLoads = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -264,7 +264,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "aaa.IPTV-probar-inicio";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cabritapp.player";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -281,7 +281,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "IPTV probar inicio/IPTV probar inicio.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "CabritApp/CabritApp.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -289,7 +289,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "IPTV-probar-inicio-Info.plist";
+				INFOPLIST_FILE = "CabritApp-Info.plist";
 				INFOPLIST_KEY_NSAppTransportSecurity_NSAllowsArbitraryLoads = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -297,7 +297,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "aaa.IPTV-probar-inicio";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cabritapp.player";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -312,7 +312,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9386C5ED2F4EC50C00EB3975 /* Build configuration list for PBXProject "IPTV probar inicio" */ = {
+		9386C5ED2F4EC50C00EB3975 /* Build configuration list for PBXProject "CabritApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9386C5FB2F4EC50D00EB3975 /* Debug */,
@@ -321,7 +321,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9386C5FD2F4EC50D00EB3975 /* Build configuration list for PBXNativeTarget "IPTV probar inicio" */ = {
+		9386C5FD2F4EC50D00EB3975 /* Build configuration list for PBXNativeTarget "CabritApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9386C5FE2F4EC50D00EB3975 /* Debug */,

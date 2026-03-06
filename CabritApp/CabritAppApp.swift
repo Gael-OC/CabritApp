@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct IPTV_probar_inicioApp: App {
+struct CabritAppApp: App {
     @StateObject private var viewModel = AppViewModel()
 
     var body: some Scene {

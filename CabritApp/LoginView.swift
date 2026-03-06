@@ -24,7 +24,7 @@ struct LoginView: View {
                     .font(.system(size: 56, weight: .semibold))
                     .foregroundStyle(.white)
 
-                Text("IPTV para macOS")
+                Text("CabritApp")
                     .font(.largeTitle.bold())
                     .foregroundStyle(.white)
 

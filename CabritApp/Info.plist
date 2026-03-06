@@ -11,6 +11,6 @@
 
     <!-- Nombre visible de la app -->
     <key>CFBundleDisplayName</key>
-    <string>IPTV</string>
+    <string>CabritApp</string>
 </dict>
 </plist>

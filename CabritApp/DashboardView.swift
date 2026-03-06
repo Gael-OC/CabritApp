@@ -102,7 +102,7 @@ struct HomeView: View {
                 startPoint: .top, endPoint: .bottom
             )
         )
-        .navigationTitle("IPTV")
+        .navigationTitle("CabritApp")
     }
 
     // MARK: - Detail Content

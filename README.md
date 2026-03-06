@@ -1,5 +1,5 @@
 <h1 align="center">
-  🎬 IPTV Player for macOS
+  🐐 CabritApp
 </h1>
 
 <p align="center">
@@ -39,13 +39,13 @@
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/iptv-player-macos.git
+   git clone https://github.com/YOUR_USERNAME/CabritApp.git
    ```
 
 2. Open in Xcode:
    ```bash
-   cd iptv-player-macos
-   open "IPTV probar inicio.xcodeproj"
+   cd CabritApp
+   open CabritApp.xcodeproj
    ```
 
 3. Select **"My Mac"** as the build target
@@ -67,8 +67,8 @@ Check the [Releases](../../releases) page for pre-built versions. To create your
 ## 🏗️ Project Structure
 
 ```
-IPTV probar inicio/
-├── IPTV_probar_inicioApp.swift   # App entry point & window config
+CabritApp/
+├── CabritAppApp.swift            # App entry point & window config
 ├── Models.swift                   # Data models (MediaItem, Session, etc.)
 ├── AppViewModel.swift             # Main ViewModel — all business logic
 ├── XtreamService.swift            # Xtream Codes API client
@@ -83,7 +83,7 @@ IPTV probar inicio/
 ├── CachedAsyncImage.swift         # Image loader with disk cache
 ├── Info.plist                     # App Transport Security config
 ├── PrivacyInfo.xcprivacy          # Apple Privacy Manifest
-└── IPTV probar inicio.entitlements # Sandbox & network permissions
+└── CabritApp.entitlements         # Sandbox & network permissions
 ```
 
 ## ⚠️ Legal Disclaimer

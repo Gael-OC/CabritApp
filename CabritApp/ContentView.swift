@@ -18,7 +18,7 @@ struct RootView: View {
                     VStack(spacing: 20) {
                         Spacer()
 
-                        Text("IPTV")
+                        Text("CabritApp")
                             .font(.system(size: 42, weight: .black, design: .rounded))
                             .foregroundStyle(
                                 LinearGradient(
