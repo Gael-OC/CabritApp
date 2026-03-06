@@ -13,18 +13,16 @@ A native macOS media player built with SwiftUI and AVKit. It connects to Xtream 
 
 - Xtream Codes login (server URL + username/password)
 - Live TV, Movies, and Series browsing with categories
-- Dark theme inspired by Apple TV
-- Native AVPlayer with PiP, fullscreen, and keyboard shortcuts (arrow keys to skip 10s)
+- Dark theme with poster cards and smooth animations
+- Native player with PiP, fullscreen, and keyboard shortcuts (arrow keys to skip 10s)
 - Continue Watching — automatically saves and resumes playback position
 - Favorites and smart search (diacritic-insensitive)
 - Custom categories and quality filters (4K, FHD, HD, etc.)
-- Screen stays awake during playback
-- Optional credential storage
 
 ### Requirements
 
 - macOS 14.0+ (Sonoma)
-- No external dependencies, 100% native Swift
+- Xcode 15+ (only if building from source)
 
 ### Installation
 
@@ -33,8 +31,6 @@ Download the latest `.dmg` from [Releases](https://github.com/Gael-OC/CabritApp/
 > Since the app isn't signed with an Apple Developer certificate, macOS may block it the first time. To open it: right-click the app > Open, or go to System Settings > Privacy & Security > Open Anyway.
 
 ### Building from source
-
-If you prefer to compile it yourself:
 
 ```bash
 git clone https://github.com/Gael-OC/CabritApp.git
@@ -78,18 +74,16 @@ Un reproductor multimedia nativo para macOS hecho con SwiftUI y AVKit. Se conect
 
 - Login con Xtream Codes (URL del servidor + usuario/contraseña)
 - TV en vivo, películas y series organizadas por categorías
-- Tema oscuro inspirado en Apple TV
+- Tema oscuro con tarjetas tipo póster y animaciones suaves
 - Reproductor nativo con PiP, pantalla completa y atajos de teclado (flechas para saltar 10s)
 - Continuar viendo — guarda y retoma la posición automáticamente
 - Favoritos y búsqueda inteligente (ignora acentos)
 - Categorías personalizadas y filtros de calidad (4K, FHD, HD, etc.)
-- La pantalla no se apaga durante la reproducción
-- Almacenamiento opcional de credenciales
 
 ### Requisitos
 
 - macOS 14.0+ (Sonoma)
-- Sin dependencias externas, 100% Swift nativo
+- Xcode 15+ (solo si compilas desde el código)
 
 ### Instalación
 
@@ -98,8 +92,6 @@ Descarga el `.dmg` más reciente de [Releases](https://github.com/Gael-OC/Cabrit
 > Como la app no está firmada con un certificado de Apple Developer, macOS puede bloquearla la primera vez. Para abrirla: clic derecho > Abrir, o ir a Ajustes del Sistema > Privacidad y Seguridad > Abrir de todos modos.
 
 ### Compilar desde el código
-
-Si prefieres compilarlo tú mismo:
 
 ```bash
 git clone https://github.com/Gael-OC/CabritApp.git
