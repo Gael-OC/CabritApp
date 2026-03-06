@@ -1,106 +1,126 @@
-<h1 align="center">
-  🐐 CabritApp
-</h1>
+# CabritApp
 
-<p align="center">
-  A native macOS IPTV player built with SwiftUI and AVKit.<br>
-  Connect to any Xtream Codes-compatible server and enjoy live TV, movies, and series.
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/platform-macOS%2014%2B-blue?style=flat-square" alt="Platform">
-  <img src="https://img.shields.io/badge/swift-5.9%2B-orange?style=flat-square" alt="Swift">
-  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License">
-</p>
+**[English](#english) | [Español](#español)**
 
 ---
 
-## ✨ Features
+<a name="english"></a>
+## English
 
-- 🔐 **Xtream Codes Login** — Connect with server URL, username, and password
-- 📺 **Live TV, Movies & Series** — Browse all categories with a clean sidebar
-- 🎨 **Apple TV-inspired UI** — Dark theme, poster cards, hero banners, smooth animations
-- ▶️ **Native AVPlayer** — Full macOS player with PiP, fullscreen, and keyboard shortcuts (← → to skip 10s)
-- 📌 **Continue Watching** — Automatically saves and resumes your position (saves every 5 seconds)
-- ⭐ **Favorites** — Save your preferred channels and movies
-- 🔍 **Smart Search** — Diacritic-insensitive, deduplicated results
-- 📁 **Custom Categories** — Group and organize server categories your way
-- 🏷️ **Quality Filters** — Filter by 4K, FHD, HD, SD, language, and more
-- 🖥️ **Screen Sleep Prevention** — Screen stays on during playback
-- 💾 **Credential Storage** — Optional "remember me" for quick login
+A native macOS media player built with SwiftUI and AVKit. It connects to Xtream Codes-compatible servers for live TV, movies, and series.
 
-## 📋 Requirements
+### Features
 
-- **macOS 14.0+** (Sonoma or later)
-- **Xcode 15.0+**
-- No external dependencies — 100% native Swift/SwiftUI
+- Xtream Codes login (server URL + username/password)
+- Live TV, Movies, and Series browsing with categories
+- Dark theme inspired by Apple TV
+- Native AVPlayer with PiP, fullscreen, and keyboard shortcuts (arrow keys to skip 10s)
+- Continue Watching — automatically saves and resumes playback position
+- Favorites and smart search (diacritic-insensitive)
+- Custom categories and quality filters (4K, FHD, HD, etc.)
+- Screen stays awake during playback
+- Optional credential storage
 
-## 🚀 How to Build
+### Requirements
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/CabritApp.git
-   ```
+- macOS 14.0+ (Sonoma)
+- No external dependencies, 100% native Swift
 
-2. Open in Xcode:
-   ```bash
-   cd CabritApp
-   open CabritApp.xcodeproj
-   ```
+### Installation
 
-3. Select **"My Mac"** as the build target
+Download the latest `.dmg` from [Releases](https://github.com/Gael-OC/CabritApp/releases), open it, and drag **CabritApp** to your Applications folder.
 
-4. Press **⌘R** to build and run
+> Since the app isn't signed with an Apple Developer certificate, macOS may block it the first time. To open it: right-click the app > Open, or go to System Settings > Privacy & Security > Open Anyway.
 
-> **Note:** The app uses App Sandbox with only outgoing network connections enabled. No server-side components needed.
+### Building from source
 
-## 📦 Releases
+If you prefer to compile it yourself:
 
-Check the [Releases](../../releases) page for pre-built versions. To create your own release:
+```bash
+git clone https://github.com/Gael-OC/CabritApp.git
+cd CabritApp
+open CabritApp.xcodeproj
+```
 
-1. In Xcode: **Product → Archive**
-2. In the Organizer, click **"Distribute App" → Copy App**
-3. Zip the `.app` file and upload it as a GitHub Release
+Select "My Mac" as target and press Cmd+R.
 
-> **Important:** Without an Apple Developer certificate, macOS will show a warning when opening the app. Users can bypass it with **right-click → Open**, or via **System Settings → Privacy & Security → Open Anyway**.
-
-## 🏗️ Project Structure
+### Project structure
 
 ```
 CabritApp/
-├── CabritAppApp.swift            # App entry point & window config
-├── Models.swift                   # Data models (MediaItem, Session, etc.)
-├── AppViewModel.swift             # Main ViewModel — all business logic
-├── XtreamService.swift            # Xtream Codes API client
-├── Persistence.swift              # UserDefaults stores (history, favorites, etc.)
-├── LoginView.swift                # Login screen
-├── ContentView.swift              # Root navigation (login vs dashboard)
-├── DashboardView.swift            # Main UI — sidebar, hero, carousels
-├── PlayerView.swift               # AVPlayer wrapper with PiP & shortcuts
-├── CarouselSectionView.swift      # Horizontal carousel component
-├── ContentDetailView.swift        # Movie/series detail sheet
-├── CategoryManagerView.swift      # Category organization UI
-├── CachedAsyncImage.swift         # Image loader with disk cache
-├── Info.plist                     # App Transport Security config
-├── PrivacyInfo.xcprivacy          # Apple Privacy Manifest
-└── CabritApp.entitlements         # Sandbox & network permissions
+├── CabritAppApp.swift         # Entry point
+├── Models.swift                # Data models
+├── AppViewModel.swift          # Business logic
+├── XtreamService.swift         # API client
+├── Persistence.swift           # Local storage
+├── LoginView.swift             # Login screen
+├── ContentView.swift           # Root view
+├── DashboardView.swift         # Main UI
+├── PlayerView.swift            # Video player
+├── CarouselSectionView.swift   # Carousel component
+├── ContentDetailView.swift     # Detail sheet
+├── CategoryManagerView.swift   # Category manager
+└── CachedAsyncImage.swift      # Image cache
 ```
 
-## ⚠️ Legal Disclaimer
+### Disclaimer
 
-> **This application is a generic media player.** It does not include, provide, host, or distribute any media content, IPTV playlists, channel lists, or streaming URLs.
->
-> The user is solely responsible for the content they access using this application. The developers assume no responsibility for how the application is used or for any content accessed through it.
->
-> **This software is provided "as is", without warranty of any kind.** Use at your own risk. The developers are not affiliated with any IPTV service provider.
+This application is a generic media player. It does not include, provide, or distribute any media content, playlists, or streaming URLs. The user is solely responsible for the content they access. This software is provided "as is", without warranty of any kind. The developer is not affiliated with any IPTV service provider.
 
-## 🤝 Contributing
+---
 
-Contributions are welcome! Feel free to:
-- 🐛 Report bugs via [Issues](../../issues)
-- 💡 Suggest features
-- 🔧 Submit pull requests
+<a name="español"></a>
+## Español
 
-## 📄 License
+Un reproductor multimedia nativo para macOS hecho con SwiftUI y AVKit. Se conecta a servidores compatibles con Xtream Codes para ver TV en vivo, películas y series.
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+### Funcionalidades
+
+- Login con Xtream Codes (URL del servidor + usuario/contraseña)
+- TV en vivo, películas y series organizadas por categorías
+- Tema oscuro inspirado en Apple TV
+- Reproductor nativo con PiP, pantalla completa y atajos de teclado (flechas para saltar 10s)
+- Continuar viendo — guarda y retoma la posición automáticamente
+- Favoritos y búsqueda inteligente (ignora acentos)
+- Categorías personalizadas y filtros de calidad (4K, FHD, HD, etc.)
+- La pantalla no se apaga durante la reproducción
+- Almacenamiento opcional de credenciales
+
+### Requisitos
+
+- macOS 14.0+ (Sonoma)
+- Sin dependencias externas, 100% Swift nativo
+
+### Instalación
+
+Descarga el `.dmg` más reciente de [Releases](https://github.com/Gael-OC/CabritApp/releases), ábrelo y arrastra **CabritApp** a tu carpeta de Aplicaciones.
+
+> Como la app no está firmada con un certificado de Apple Developer, macOS puede bloquearla la primera vez. Para abrirla: clic derecho > Abrir, o ir a Ajustes del Sistema > Privacidad y Seguridad > Abrir de todos modos.
+
+### Compilar desde el código
+
+Si prefieres compilarlo tú mismo:
+
+```bash
+git clone https://github.com/Gael-OC/CabritApp.git
+cd CabritApp
+open CabritApp.xcodeproj
+```
+
+Selecciona "My Mac" como destino y presiona Cmd+R.
+
+### Aviso legal
+
+Esta aplicación es un reproductor multimedia genérico. No incluye, provee ni distribuye contenido multimedia, listas de reproducción ni URLs de streaming. El usuario es el único responsable del contenido al que accede. Este software se proporciona "tal cual", sin garantía de ningún tipo. El desarrollador no está afiliado a ningún proveedor de servicios IPTV.
+
+---
+
+## License / Licencia
+
+MIT License — see [LICENSE](LICENSE).
+
+## Contributing / Contribuir
+
+Bug reports, feature suggestions, and pull requests are welcome.
+
+Los reportes de bugs, sugerencias y pull requests son bienvenidos.
