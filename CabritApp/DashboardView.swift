@@ -135,6 +135,7 @@ struct HomeView: View {
                     .id(viewModel.selectedType)     // force re-render on tab change
                 }
                 .animation(.easeInOut(duration: 0.3), value: viewModel.selectedType)
+                .animation(.easeInOut(duration: 0.3), value: viewModel.activeFilters)
                 .onChange(of: viewModel.scrollToCategoryId) { _, newId in
                     guard let id = newId else { return }
                     withAnimation(.easeInOut(duration: 0.4)) {
