@@ -103,8 +103,17 @@ struct HomeView: View {
             }
         }
         .listStyle(.sidebar)
+        .safeAreaPadding(.top, 0)
         .scrollIndicators(.hidden)
         .scrollContentBackground(.hidden)
+        .overlay(alignment: .topLeading) {
+            Capsule()
+                .fill(.ultraThinMaterial)
+                .environment(\.colorScheme, .dark)
+                .frame(width: 70, height: 22)
+                .offset(x: 6, y: -37)
+                .allowsHitTesting(false)
+        }
         .background(
             LinearGradient(
                 colors: [Color(red: 0.07, green: 0.07, blue: 0.11),
@@ -123,37 +132,55 @@ struct HomeView: View {
             LinearGradient(colors: [bgTop, bgBottom], startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
                 .allowsHitTesting(false)
-            ScrollViewReader { proxy in
-                ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 28) {
-                        topBar
+            VStack(alignment: .leading, spacing: 0) {
+                topBar
+                    .padding(.horizontal, 28)
+                    .padding(.top, 8)
+                    .padding(.bottom, 20)
+                    .zIndex(1)
 
-                        if viewModel.isLoadingCurrentType {
-                            loadingView
-                        } else if let error = viewModel.sectionLoadError {
-                            errorBanner(error)
-                        } else if viewModel.isSearching {
+                if viewModel.isLoadingCurrentType {
+                    Spacer()
+                    loadingView
+                    Spacer()
+                } else if let error = viewModel.sectionLoadError {
+                    Spacer()
+                    errorBanner(error)
+                    Spacer()
+                } else if viewModel.isSearching {
+                    ScrollViewReader { proxy in
+                        ScrollView {
                             searchResultsView
-                        } else if viewModel.currentSections.isEmpty && viewModel.favoriteSection == nil {
-                            emptyView
-                        } else {
-                            contentBody
+                                .padding(.horizontal, 28)
+                                .padding(.bottom, 24)
                         }
                     }
-                    .padding(28)
-                    .padding(.bottom, 24)
-                    .id(viewModel.selectedType)     // force re-render on tab change
-                }
-                .animation(.easeInOut(duration: 0.3), value: viewModel.selectedType)
-                .animation(.easeInOut(duration: 0.3), value: viewModel.activeFilters)
-                .onChange(of: viewModel.scrollToCategoryId) { _, newId in
-                    guard let id = newId else { return }
-                    withAnimation(.easeInOut(duration: 0.4)) {
-                        proxy.scrollTo(id, anchor: .top)
-                    }
-                    // Reset after scroll
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        viewModel.scrollToCategoryId = nil
+                } else if viewModel.currentSections.isEmpty && viewModel.favoriteSection == nil {
+                    Spacer()
+                    emptyView
+                    Spacer()
+                } else {
+                    ScrollViewReader { proxy in
+                        ScrollView {
+                            LazyVStack(alignment: .leading, spacing: 28) {
+                                contentBody
+                            }
+                            .padding(.horizontal, 28)
+                            .padding(.bottom, 24)
+                            .id(viewModel.selectedType)     // force re-render on tab change
+                        }
+                        .animation(.easeInOut(duration: 0.3), value: viewModel.selectedType)
+                        .animation(.easeInOut(duration: 0.3), value: viewModel.activeFilters)
+                        .onChange(of: viewModel.scrollToCategoryId) { _, newId in
+                            guard let id = newId else { return }
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                proxy.scrollTo(id, anchor: .top)
+                            }
+                            // Reset after scroll
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                viewModel.scrollToCategoryId = nil
+                            }
+                        }
                     }
                 }
             }
@@ -209,6 +236,7 @@ struct HomeView: View {
                         .textFieldStyle(.plain)
                         .font(.system(size: 13))
                         .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
 
                     if !viewModel.searchText.isEmpty {
                         Button {
@@ -222,8 +250,7 @@ struct HomeView: View {
                     }
                 }
                 .padding(.horizontal, 12)
-                .padding(.vertical, 7)
-                .frame(width: 230)
+                .frame(width: 230, height: 32)
                 .background(Color.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
                 .overlay {
                     RoundedRectangle(cornerRadius: 8)
@@ -243,6 +270,7 @@ struct HomeView: View {
                                     .font(.caption.weight(.bold))
                                     .padding(.horizontal, 14)
                                     .padding(.vertical, 8)
+                                    .contentShape(Capsule())
                                     .background(
                                         isActive
                                             ? Color(red: 0.35, green: 0.45, blue: 1.0).opacity(0.8)

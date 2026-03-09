@@ -29,22 +29,20 @@ struct RootView: View {
 
                         VStack(spacing: 10) {
                             // Progress bar
-                            GeometryReader { geo in
-                                ZStack(alignment: .leading) {
-                                    RoundedRectangle(cornerRadius: 6)
-                                        .fill(Color.white.opacity(0.08))
-                                        .frame(height: 8)
+                            ZStack(alignment: .leading) {
+                                RoundedRectangle(cornerRadius: 6)
+                                    .fill(Color.white.opacity(0.08))
+                                    .frame(width: 300, height: 8)
 
-                                    RoundedRectangle(cornerRadius: 6)
-                                        .fill(
-                                            LinearGradient(
-                                                colors: [Color(red: 0.35, green: 0.45, blue: 1.0), Color(red: 0.55, green: 0.35, blue: 1.0)],
-                                                startPoint: .leading, endPoint: .trailing
-                                            )
+                                RoundedRectangle(cornerRadius: 6)
+                                    .fill(
+                                        LinearGradient(
+                                            colors: [Color(red: 0.35, green: 0.45, blue: 1.0), Color(red: 0.55, green: 0.35, blue: 1.0)],
+                                            startPoint: .leading, endPoint: .trailing
                                         )
-                                        .frame(width: max(0, geo.size.width * viewModel.loadingProgress), height: 8)
-                                        .animation(.easeInOut(duration: 0.4), value: viewModel.loadingProgress)
-                                }
+                                    )
+                                    .frame(width: max(0, 300 * viewModel.loadingProgress), height: 8)
+                                    .animation(.easeInOut(duration: 0.4), value: viewModel.loadingProgress)
                             }
                             .frame(width: 300, height: 8)
 
@@ -60,6 +58,7 @@ struct RootView: View {
                         Spacer()
                     }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .toolbar { ToolbarItem { Color.clear } }
                 .toolbarBackground(.hidden, for: .windowToolbar)
                 .transition(.opacity)
