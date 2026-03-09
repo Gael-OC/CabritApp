@@ -91,6 +91,16 @@ struct HomeView: View {
             } header: {
                 Text("Usuario").font(.caption.weight(.semibold))
             }
+
+            // Version info
+            Section {
+                let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+                let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
+                Text("CabritApp v\(version) (\(build))")
+                    .font(.caption2)
+                    .foregroundStyle(.white.opacity(0.25))
+                    .frame(maxWidth: .infinity)
+            }
         }
         .listStyle(.sidebar)
         .scrollIndicators(.hidden)
@@ -218,8 +228,8 @@ struct HomeView: View {
                 .overlay {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.white.opacity(0.12), lineWidth: 1)
+                        .allowsHitTesting(false)
                 }
-                .contentShape(Rectangle())
             }
 
             // Filter chips (only shown when filters are available)
@@ -240,7 +250,6 @@ struct HomeView: View {
                                         in: Capsule()
                                     )
                                     .foregroundStyle(isActive ? .white : .white.opacity(0.5))
-                                    .contentShape(Capsule())
                             }
                             .buttonStyle(.plain)
                         }
