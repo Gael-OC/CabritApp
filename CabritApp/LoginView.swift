@@ -4,6 +4,7 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject private var viewModel: AppViewModel
+    @EnvironmentObject private var lang: LanguageManager
 
     private var errorText: String? {
         if case let .error(message) = viewModel.state { return message }
@@ -28,20 +29,20 @@ struct LoginView: View {
                     .font(.largeTitle.bold())
                     .foregroundStyle(.white)
 
-                Text("Canales en vivo · Películas · Series")
+                Text(lang.t(.loginSubtitle))
                     .foregroundStyle(.white.opacity(0.8))
 
                 VStack(spacing: 14) {
-                    darkField("Servidor (ej: http://tu-servidor.com:8880)",
+                    darkField(lang.t(.loginServerPlaceholder),
                               text: $viewModel.credentials.serverURL)
 
-                    darkField("Usuario",
+                    darkField(lang.t(.loginUser),
                               text: $viewModel.credentials.username)
 
-                    darkSecureField("Contraseña",
+                    darkSecureField(lang.t(.loginPassword),
                                     text: $viewModel.credentials.password)
 
-                    Toggle("Recordar credenciales en este Mac", isOn: $viewModel.rememberCredentials)
+                    Toggle(lang.t(.loginRemember), isOn: $viewModel.rememberCredentials)
                         .toggleStyle(.switch)
                         .foregroundStyle(.white.opacity(0.8))
                 }
@@ -63,7 +64,7 @@ struct LoginView: View {
                 Button {
                     Task { await viewModel.login() }
                 } label: {
-                    Text("Entrar")
+                    Text(lang.t(.loginButton))
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
@@ -78,7 +79,7 @@ struct LoginView: View {
                 )
 
                 if case .error = viewModel.state {
-                    Button("Olvidar credenciales guardadas") {
+                    Button(lang.t(.loginForgetSaved)) {
                         viewModel.forgetSavedCredentials()
                     }
                     .foregroundStyle(.white.opacity(0.8))
@@ -86,6 +87,24 @@ struct LoginView: View {
             }
             .frame(maxWidth: 520)
             .padding(28)
+        }
+        .overlay(alignment: .topTrailing) {
+            Button {
+                lang.toggleLanguage()
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "globe")
+                    Text(lang.currentLanguage == .en ? "Español" : "English")
+                }
+                .font(.subheadline.weight(.medium))
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(Color.white.opacity(0.08), in: Capsule())
+                .overlay(Capsule().stroke(Color.white.opacity(0.15), lineWidth: 1))
+                .foregroundStyle(.white.opacity(0.9))
+            }
+            .buttonStyle(.plain)
+            .padding(24)
         }
     }
 

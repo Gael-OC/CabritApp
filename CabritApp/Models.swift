@@ -220,15 +220,22 @@ enum XtreamError: LocalizedError {
     case invalidServerURL
     case authenticationFailed
     case malformedResponse
+    case hostNotFound
+    case timeout
+    case connectionLost
+    case genericNetwork
 
     var errorDescription: String? {
+        // Now handled by LanguageManager in the UI layer by passing the enum directly or checking type,
+        // but for safety in generic swift logs we keep English here:
         switch self {
-        case .invalidServerURL:
-            return "La URL del servidor no es válida. Usa http(s)://host[:puerto]"
-        case .authenticationFailed:
-            return "No se pudo iniciar sesión. Revisa servidor, usuario y contraseña."
-        case .malformedResponse:
-            return "La respuesta del servidor no tiene el formato esperado."
+        case .invalidServerURL: return "Invalid Server URL"
+        case .authenticationFailed: return "Authentication Failed"
+        case .malformedResponse: return "Malformed Response"
+        case .hostNotFound: return "Host Not Found"
+        case .timeout: return "Timeout"
+        case .connectionLost: return "Connection Lost"
+        case .genericNetwork: return "Network Error"
         }
     }
 }

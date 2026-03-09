@@ -3,11 +3,13 @@ import SwiftUI
 @main
 struct CabritAppApp: App {
     @StateObject private var viewModel = AppViewModel()
+    @StateObject private var languageManager = LanguageManager()
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environmentObject(viewModel)
+                .environmentObject(languageManager)
                 .frame(minWidth: 1000, minHeight: 650)
                 .preferredColorScheme(.dark)
                 .background(WindowConfigurator())

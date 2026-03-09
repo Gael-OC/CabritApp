@@ -4,6 +4,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var viewModel: AppViewModel
+    @EnvironmentObject private var lang: LanguageManager
 
     // Unified dark palette — matches window + sidebar + titlebar
     private let bgTop    = Color(red: 0.07, green: 0.07, blue: 0.11)
@@ -26,26 +27,23 @@ struct HomeView: View {
         List(selection: $viewModel.selectedType) {
             Section {
                 ForEach(MediaType.allCases) { type in
-                    Label(type.rawValue, systemImage: type.systemImage)
+                    Label(lang.tMediaType(type), systemImage: type.systemImage)
                         .tag(type)
                         .font(.body.weight(.medium))
                 }
             } header: {
-                Text("Contenido").font(.caption.weight(.semibold))
+                Text(lang.t(.sidebarContent)).font(.caption.weight(.semibold))
             }
 
             Section {
-                Button { Task { await viewModel.reloadCurrentType() } } label: {
-                    Label("Recargar", systemImage: "arrow.clockwise")
-                        .font(.subheadline)
+                sidebarActionButton(title: lang.t(.sidebarReload), icon: "arrow.clockwise") {
+                    Task { await viewModel.reloadCurrentType() }
                 }
-
-                Button { viewModel.showCategoryManager = true } label: {
-                    Label("Gestionar", systemImage: "folder.badge.gear")
-                        .font(.subheadline)
+                sidebarActionButton(title: lang.t(.sidebarManage), icon: "folder.badge.gear") {
+                    viewModel.showCategoryManager = true
                 }
             } header: {
-                Text("Acciones").font(.caption.weight(.semibold))
+                Text(lang.t(.sidebarActions)).font(.caption.weight(.semibold))
             }
 
             // Category list for quick navigation
@@ -71,25 +69,23 @@ struct HomeView: View {
                         .buttonStyle(.plain)
                     }
                 } header: {
-                    Text("Categorías").font(.caption.weight(.semibold))
+                    Text(lang.t(.sidebarCategories)).font(.caption.weight(.semibold))
                 }
             }
 
             Section {
-                Button { viewModel.logout() } label: {
-                    Label("Cerrar sesión", systemImage: "rectangle.portrait.and.arrow.right")
-                        .font(.subheadline)
+                sidebarActionButton(title: lang.t(.sidebarLanguage), icon: "globe") {
+                    lang.toggleLanguage()
                 }
-                Button {
+                sidebarActionButton(title: lang.t(.sidebarLogout), icon: "rectangle.portrait.and.arrow.right") {
+                    viewModel.logout()
+                }
+                sidebarActionButton(title: lang.t(.loginForgetSaved), icon: "trash", color: .red) {
                     viewModel.forgetSavedCredentials()
                     viewModel.logout()
-                } label: {
-                    Label("Olvidar cuenta", systemImage: "trash")
-                        .font(.subheadline)
-                        .foregroundStyle(.red)
                 }
             } header: {
-                Text("Usuario").font(.caption.weight(.semibold))
+                Text(lang.t(.sidebarUser)).font(.caption.weight(.semibold))
             }
 
             // Version info
@@ -122,6 +118,23 @@ struct HomeView: View {
             )
         )
         .navigationTitle("CabritApp")
+    }
+
+    private func sidebarActionButton(title: String, icon: String, color: Color = .white, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 6) {
+                Image(systemName: icon)
+                Text(title)
+            }
+            .font(.subheadline)
+            .foregroundStyle(color)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.vertical, 6)
+            .background(Color.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 6))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .padding(.vertical, 2)
     }
 
     // MARK: - Detail Content
@@ -215,11 +228,11 @@ struct HomeView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(typeTitle)
+                    Text(lang.tMediaType(viewModel.selectedType))
                         .font(.system(size: 30, weight: .bold, design: .rounded))
                         .foregroundStyle(.white)
 
-                    Text(typeSubtitle)
+                    Text(lang.tSubtitleForMediaType(viewModel.selectedType))
                         .font(.subheadline)
                         .foregroundStyle(.white.opacity(0.5))
                 }
@@ -232,7 +245,7 @@ struct HomeView: View {
                         .foregroundStyle(.white.opacity(0.45))
                         .font(.system(size: 13))
 
-                    TextField("Buscar…", text: $viewModel.searchText)
+                    TextField(lang.t(.searchPlaceholder), text: $viewModel.searchText)
                         .textFieldStyle(.plain)
                         .font(.system(size: 13))
                         .foregroundStyle(.white)
@@ -286,7 +299,7 @@ struct HomeView: View {
                             Button {
                                 viewModel.activeFilters.removeAll()
                             } label: {
-                                Text("Limpiar")
+                                Text(lang.t(.clearFilters))
                                     .font(.caption.weight(.medium))
                                     .foregroundStyle(.orange.opacity(0.7))
                                     .padding(.horizontal, 10)
@@ -351,7 +364,7 @@ struct HomeView: View {
 
     private var searchResultsView: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("\(viewModel.searchResults.count) resultados")
+            Text("\(viewModel.searchResults.count) \(lang.t(.searchPrefixResults))")
                 .font(.title3.bold())
                 .foregroundStyle(.white)
 
@@ -360,7 +373,7 @@ struct HomeView: View {
                     Image(systemName: "magnifyingglass")
                         .font(.system(size: 40))
                         .foregroundStyle(.white.opacity(0.2))
-                    Text("Sin resultados para \"\(viewModel.searchText)\"")
+                    Text("\(lang.t(.searchNoResults)) \"\(viewModel.searchText)\"")
                         .foregroundStyle(.white.opacity(0.4))
                 }
                 .frame(maxWidth: .infinity)
@@ -380,7 +393,7 @@ struct HomeView: View {
     private var loadingView: some View {
         VStack(spacing: 16) {
             ProgressView().scaleEffect(1.2).tint(.white)
-            Text("Cargando \(viewModel.selectedType.rawValue.lowercased())…")
+            Text("\(lang.t(.loadingPrefix)) \(lang.tMediaType(viewModel.selectedType).lowercased())…")
                 .foregroundStyle(.white.opacity(0.45))
         }
         .frame(maxWidth: .infinity).padding(.top, 100)
@@ -389,8 +402,8 @@ struct HomeView: View {
     private var emptyView: some View {
         VStack(spacing: 14) {
             Image(systemName: "tray").font(.system(size: 48)).foregroundStyle(.white.opacity(0.15))
-            Text("Sin contenido").font(.title3.bold()).foregroundStyle(.white.opacity(0.3))
-            Text("Prueba recargar.").foregroundStyle(.white.opacity(0.2))
+            Text(lang.t(.stateEmptyTitle)).font(.title3.bold()).foregroundStyle(.white.opacity(0.3))
+            Text(lang.t(.stateEmptyDesc)).foregroundStyle(.white.opacity(0.2))
         }
         .frame(maxWidth: .infinity).padding(.top, 100)
     }
@@ -401,7 +414,7 @@ struct HomeView: View {
                 .font(.system(size: 44))
                 .foregroundStyle(.orange.opacity(0.7))
 
-            Text("Error al cargar")
+            Text(lang.t(.stateErrorTitle))
                 .font(.title3.bold())
                 .foregroundStyle(.white.opacity(0.7))
 
@@ -414,7 +427,7 @@ struct HomeView: View {
             Button {
                 Task { await viewModel.reloadCurrentType() }
             } label: {
-                Label("Reintentar", systemImage: "arrow.clockwise")
+                Label(lang.t(.stateRetry), systemImage: "arrow.clockwise")
                     .font(.headline)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 10)
@@ -431,22 +444,6 @@ struct HomeView: View {
     private var filteredContinueWatching: [RecentPlayback] {
         viewModel.continueWatching.filter { $0.type == viewModel.selectedType }
     }
-
-    private var typeTitle: String {
-        switch viewModel.selectedType {
-        case .live:   return "Canales"
-        case .vod:    return "Películas"
-        case .series: return "Series"
-        }
-    }
-
-    private var typeSubtitle: String {
-        switch viewModel.selectedType {
-        case .live:   return "Televisión en vivo"
-        case .vod:    return "Películas a demanda"
-        case .series: return "Series y episodios"
-        }
-    }
 }
 
 // MARK: - Hero Banner
@@ -454,6 +451,7 @@ struct HomeView: View {
 struct HeroBannerView: View {
     let item:       MediaItem
     let type:       MediaType
+    @EnvironmentObject private var lang: LanguageManager
     var onPlay:     () -> Void
     var onFavorite: () -> Void
     var isFavorite: () -> Bool
@@ -484,7 +482,7 @@ struct HeroBannerView: View {
             .clipShape(RoundedRectangle(cornerRadius: 16))
 
             VStack(alignment: .leading, spacing: 10) {
-                Label(type.rawValue, systemImage: type.systemImage)
+                Label(lang.tMediaType(type), systemImage: type.systemImage)
                     .font(.caption.weight(.bold))
                     .textCase(.uppercase)
                     .padding(.horizontal, 10).padding(.vertical, 5)
@@ -497,7 +495,7 @@ struct HeroBannerView: View {
 
                 HStack(spacing: 12) {
                     Button { onPlay() } label: {
-                        Label("Reproducir", systemImage: "play.fill")
+                        Label(lang.t(.btnPlay), systemImage: "play.fill")
                             .font(.headline)
                             .padding(.horizontal, 20).padding(.vertical, 10)
                     }
@@ -530,6 +528,7 @@ struct ContinueWatchingSectionView: View {
     let items: [RecentPlayback]
     var onSelect: (RecentPlayback) -> Void
     var onRemove: (RecentPlayback) -> Void
+    @EnvironmentObject private var lang: LanguageManager
     @State private var hoveredId: UUID?
     @State private var isHoveringCarousel = false
     @State private var scrollPosition: Int = 0
@@ -537,7 +536,7 @@ struct ContinueWatchingSectionView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Continuar viendo")
+            Text(lang.t(.continueWatching))
                 .font(.title3.bold()).foregroundStyle(.white)
 
             ZStack {
@@ -589,7 +588,7 @@ struct ContinueWatchingSectionView: View {
                                     Button(role: .destructive) {
                                         onRemove(item)
                                     } label: {
-                                        Label("Quitar de continuar viendo", systemImage: "xmark.circle")
+                                        Label(lang.t(.btnRemoveContinue), systemImage: "xmark.circle")
                                     }
                                 }
                             }
@@ -665,17 +664,18 @@ struct ContinueWatchingSectionView: View {
 
 struct SeriesEpisodesView: View {
     @EnvironmentObject private var viewModel: AppViewModel
+    @EnvironmentObject private var lang: LanguageManager
     let series: MediaItem
 
     var body: some View {
         NavigationStack {
             Group {
                 if viewModel.isLoadingEpisodes {
-                    ProgressView("Cargando episodios…")
+                    ProgressView(lang.t(.loadingEpisodes))
                 } else if viewModel.episodes.isEmpty {
                     VStack(spacing: 12) {
                         Image(systemName: "film").font(.system(size: 44)).foregroundStyle(.secondary)
-                        Text("Sin episodios").font(.title3.bold())
+                        Text(lang.t(.noEpisodesTitle)).font(.title3.bold())
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
@@ -762,6 +762,7 @@ struct MediaCardView: View {
 
 struct ItemsGridView: View {
     let items: [MediaItem]
+    @EnvironmentObject private var lang: LanguageManager
     var isPoster: Bool = false
     var onSelect: (MediaItem) -> Void
     var isFavorite: (MediaItem) -> Bool
@@ -793,7 +794,7 @@ struct ItemsGridView: View {
                         toggleFavorite(item)
                     } label: {
                         Label(
-                            isFavorite(item) ? "Quitar de favoritos" : "Añadir a favoritos",
+                            isFavorite(item) ? lang.t(.btnRemoveFav) : lang.t(.btnAddFav),
                             systemImage: isFavorite(item) ? "star.slash" : "star"
                         )
                     }
