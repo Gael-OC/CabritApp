@@ -13,6 +13,7 @@ struct CabritAppApp: App {
                 .frame(minWidth: 1000, minHeight: 650)
                 .preferredColorScheme(.dark)
                 .background(WindowConfigurator())
+                .onAppear { viewModel.setLanguageManager(languageManager) }
         }
     }
 }

@@ -42,7 +42,7 @@ final class AppViewModel: ObservableObject {
 
     // Track which types have been loaded at least once
     private var loadedTypes:           Set<MediaType> = []
-    private var loadingTasks:          [MediaType: Task<Void, Never>] = []
+    private var loadingTasks:          [MediaType: Task<Void, Never>] = [:]
 
     @Published var availableFilters:   [String] = []   // computed when sections load
 
@@ -71,6 +71,11 @@ final class AppViewModel: ObservableObject {
     private let favoritesStore   = FavoritesStore()
     private var session:         XtreamSession?
     private var didBootstrap     = false
+    private weak var lang:       LanguageManager?   // injected from the view layer
+
+    func setLanguageManager(_ languageManager: LanguageManager) {
+        lang = languageManager
+    }
 
     init() {
         let prefs = AppPreferences.load()
@@ -134,7 +139,7 @@ final class AppViewModel: ObservableObject {
     func login() async {
         state = .loading
         loadingProgress = 0
-        loadingStatus = "Conectando al servidor…"
+        loadingStatus = lang?.t(.loginConnecting) ?? "Conectando al servidor…"
 
         let creds = XtreamCredentials(
             serverURL: credentials.serverURL.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -150,14 +155,14 @@ final class AppViewModel: ObservableObject {
 
             // Cargar los 3 tipos al mismo tiempo
             loadingProgress = 0.15
-            loadingStatus = "Cargando contenido…"
+            loadingStatus = lang?.t(.loginLoadingLive) ?? "Cargando contenido…"
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { await self.loadType(.live) }
                 group.addTask { await self.loadType(.vod) }
                 group.addTask { await self.loadType(.series) }
             }
             loadingProgress = 1.0
-            loadingStatus = "Listo!"
+            loadingStatus = lang?.t(.loginReady) ?? "Listo!"
 
             state = .ready
         } catch {

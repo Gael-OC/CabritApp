@@ -82,6 +82,26 @@ enum L10nKey: String, Hashable {
     case catMgrShowBtn
     case catMgrHideBtn
     case catMgrNoHidden
+    case catMgrTabServer
+    case catMgrTabCustom
+    case catMgrShowAll
+    case catMgrHideAll
+    case catMgrFromServer
+    case catMgrItems
+    case catMgrGroupHint
+    case catMgrAppearFirst
+    case catMgrVisible
+    case catMgrHidden
+    case catMgrCustomLabel
+    case catMgrCategoryName
+    case catMgrNamePlaceholder
+    case catMgrCategoriesSelected
+    case catMgrSelectAll
+    case catMgrDeselect
+    case catMgrSave
+    case catMgrCreate
+    case catMgrEditTitle
+    case catMgrNewTitle
     
     // Content Detail
     case detailPlot
@@ -165,6 +185,26 @@ private let translations: [AppLanguage: [L10nKey: String]] = [
         .catMgrShowBtn: "Mostrar",
         .catMgrHideBtn: "Ocultar",
         .catMgrNoHidden: "No tienes categorías ocultas.",
+        .catMgrTabServer: "Servidor",
+        .catMgrTabCustom: "Personalizadas",
+        .catMgrShowAll: "Mostrar todas",
+        .catMgrHideAll: "Ocultar todas",
+        .catMgrFromServer: "del servidor",
+        .catMgrItems: "elementos",
+        .catMgrGroupHint: "Agrupa categorías del servidor bajo un nombre personalizado.",
+        .catMgrAppearFirst: "Las personalizadas aparecen primero en el dashboard.",
+        .catMgrVisible: "visibles",
+        .catMgrHidden: "ocultas",
+        .catMgrCustomLabel: "personalizadas",
+        .catMgrCategoryName: "Nombre",
+        .catMgrNamePlaceholder: "Ej: Deportes, Cine, Infantil…",
+        .catMgrCategoriesSelected: "Categorías (%d seleccionadas)",
+        .catMgrSelectAll: "Seleccionar todo",
+        .catMgrDeselect: "Deseleccionar",
+        .catMgrSave: "Guardar",
+        .catMgrCreate: "Crear",
+        .catMgrEditTitle: "Editar categoría",
+        .catMgrNewTitle: "Nueva categoría",
         
         .detailPlot: "Sinopsis",
         .detailCast: "Reparto",
@@ -242,6 +282,26 @@ private let translations: [AppLanguage: [L10nKey: String]] = [
         .catMgrShowBtn: "Show",
         .catMgrHideBtn: "Hide",
         .catMgrNoHidden: "You don't have any hidden categories.",
+        .catMgrTabServer: "Server",
+        .catMgrTabCustom: "Custom",
+        .catMgrShowAll: "Show all",
+        .catMgrHideAll: "Hide all",
+        .catMgrFromServer: "from server",
+        .catMgrItems: "items",
+        .catMgrGroupHint: "Group server categories under a custom name.",
+        .catMgrAppearFirst: "Custom categories appear first on the dashboard.",
+        .catMgrVisible: "visible",
+        .catMgrHidden: "hidden",
+        .catMgrCustomLabel: "custom",
+        .catMgrCategoryName: "Name",
+        .catMgrNamePlaceholder: "e.g. Sports, Kids, Cinema…",
+        .catMgrCategoriesSelected: "Categories (%d selected)",
+        .catMgrSelectAll: "Select all",
+        .catMgrDeselect: "Deselect",
+        .catMgrSave: "Save",
+        .catMgrCreate: "Create",
+        .catMgrEditTitle: "Edit Category",
+        .catMgrNewTitle: "New Category",
         
         .detailPlot: "Plot",
         .detailCast: "Cast",
