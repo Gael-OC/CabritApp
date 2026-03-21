@@ -4,6 +4,7 @@ import SwiftUI
 
 struct ContentDetailView: View {
     @EnvironmentObject private var viewModel: AppViewModel
+    @EnvironmentObject private var lang: LanguageManager
     @Environment(\.dismiss) private var dismiss
 
     let item: MediaItem
@@ -39,10 +40,10 @@ struct ContentDetailView: View {
 
                             // Cast & Director
                             if let cast = detail?.cast, !cast.isEmpty {
-                                detailLine(icon: "person.2.fill", label: "Reparto", value: cast)
+                                detailLine(icon: "person.2.fill", label: lang.t(.detailCast), value: cast)
                             }
                             if let director = detail?.director, !director.isEmpty {
-                                detailLine(icon: "megaphone.fill", label: "Director", value: director)
+                                detailLine(icon: "megaphone.fill", label: lang.t(.detailDirector), value: director)
                             }
 
                             // Episodes section (series only)
@@ -103,7 +104,7 @@ struct ContentDetailView: View {
                         viewModel.selectedItemForDetail = nil
                         viewModel.playItem(item)
                     } label: {
-                        Label("Reproducir", systemImage: "play.fill")
+                        Label(lang.t(.btnPlay), systemImage: "play.fill")
                             .font(.subheadline.weight(.semibold))
                             .padding(.horizontal, 20)
                             .padding(.vertical, 10)
@@ -199,7 +200,7 @@ struct ContentDetailView: View {
                 }
             }
             if isSeries {
-                Text("\(viewModel.episodes.count) episodios")
+                Text("\(viewModel.episodes.count) \(lang.currentLanguage == .en ? "episodes" : "episodios")")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.white.opacity(0.5))
             }
@@ -251,13 +252,13 @@ struct ContentDetailView: View {
             if viewModel.isLoadingEpisodes {
                 HStack {
                     ProgressView().scaleEffect(0.7).tint(.white)
-                    Text("Cargando episodios...")
+                    Text(lang.t(.loadingEpisodes))
                         .font(.caption)
                         .foregroundStyle(.white.opacity(0.4))
                 }
                 .padding(.top, 8)
             } else if viewModel.episodes.isEmpty {
-                Text("No hay episodios disponibles.")
+                Text(lang.t(.noEpisodesTitle))
                     .font(.subheadline)
                     .foregroundStyle(.white.opacity(0.3))
                     .padding(.top, 8)
@@ -300,7 +301,7 @@ struct ContentDetailView: View {
                         }
                     } label: {
                         HStack {
-                            Text(seasons.count == 1 ? "Episodios" : "Temporada \(season)")
+                            Text(seasons.count == 1 ? (lang.currentLanguage == .en ? "Episodes" : "Episodios") : (lang.currentLanguage == .en ? "Season \(season)" : "Temporada \(season)"))
                                 .font(.subheadline.weight(.semibold))
                                 .foregroundStyle(.white.opacity(0.8))
                             Spacer()
@@ -323,7 +324,7 @@ struct ContentDetailView: View {
             HStack {
                 Spacer()
                 ProgressView().scaleEffect(0.8).tint(.white)
-                Text("Cargando info...")
+                Text(lang.currentLanguage == .en ? "Loading info…" : "Cargando info…")
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.4))
                 Spacer()

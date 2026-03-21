@@ -597,6 +597,8 @@ final class AppViewModel: ObservableObject {
             case .authenticationFailed: return "Usuario o contraseña incorrectos o la cuenta está inactiva."
             case .invalidServerURL:     return xtream.localizedDescription
             case .malformedResponse:    return "El servidor respondió con un formato no compatible."
+            case .hostNotFound, .timeout, .connectionLost, .genericNetwork: 
+                return "Error de conexión o servidor inalcanzable."
             }
         }
         if let urlError = error as? URLError {

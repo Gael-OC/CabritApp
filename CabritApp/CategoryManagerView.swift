@@ -4,11 +4,12 @@ import SwiftUI
 
 struct CategoryManagerView: View {
     @EnvironmentObject private var viewModel: AppViewModel
+    @EnvironmentObject private var lang: LanguageManager
     @Environment(\.dismiss) private var dismiss
 
     enum Tab: String, CaseIterable {
-        case server       = "Servidor"
-        case custom       = "Personalizadas"
+        case server       = "server"
+        case custom       = "custom"
     }
 
     @State private var selectedTab: Tab = .server
@@ -52,9 +53,8 @@ struct CategoryManagerView: View {
 
                 // Segmented picker
                 Picker("", selection: $selectedTab) {
-                    ForEach(Tab.allCases, id: \.self) { tab in
-                        Text(tab.rawValue).tag(tab)
-                    }
+                    Text(lang.currentLanguage == .en ? "Server" : "Servidor").tag(Tab.server)
+                    Text(lang.currentLanguage == .en ? "Custom" : "Personalizadas").tag(Tab.custom)
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal, 24)
@@ -76,10 +76,12 @@ struct CategoryManagerView: View {
         .sheet(isPresented: $showingAddCustom) {
             CustomCategoryEditorView(mode: .add, type: currentType, serverSections: serverSections)
                 .environmentObject(viewModel)
+                .environmentObject(lang)
         }
         .sheet(item: $editingCustom) { cat in
             CustomCategoryEditorView(mode: .edit(cat), type: currentType, serverSections: serverSections)
                 .environmentObject(viewModel)
+                .environmentObject(lang)
         }
     }
 
@@ -88,11 +90,11 @@ struct CategoryManagerView: View {
     private var header: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Gestionar categorías")
+                Text(lang.t(.catMgrTitle))
                     .font(.system(size: 22, weight: .bold, design: .rounded))
                     .foregroundStyle(.white)
 
-                Text("\(currentType.rawValue) · \(visibleCount) visibles · \(hiddenCount) ocultas · \(customCats.count) personalizadas")
+                Text("\(lang.tMediaType(currentType)) · \(visibleCount) \(lang.currentLanguage == .en ? "visible" : "visibles") · \(hiddenCount) \(lang.currentLanguage == .en ? "hidden" : "ocultas") · \(customCats.count) \(lang.currentLanguage == .en ? "custom" : "personalizadas")")
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.5))
             }
@@ -118,7 +120,7 @@ struct CategoryManagerView: View {
                     Image(systemName: "magnifyingglass")
                         .foregroundStyle(.white.opacity(0.4))
                         .font(.system(size: 13))
-                    TextField("Buscar categorías…", text: $searchText)
+                    TextField(lang.t(.searchPlaceholder), text: $searchText)
                         .textFieldStyle(.plain)
                         .font(.system(size: 13))
                         .foregroundStyle(.white)
@@ -141,14 +143,14 @@ struct CategoryManagerView: View {
 
                 HStack(spacing: 12) {
                     Button { viewModel.showAllCategories() } label: {
-                        Label("Mostrar todas", systemImage: "eye")
+                        Label(lang.currentLanguage == .en ? "Show all" : "Mostrar todas", systemImage: "eye")
                             .font(.caption.weight(.medium))
                     }
                     .buttonStyle(.plain)
                     .foregroundStyle(Color(red: 0.4, green: 0.7, blue: 0.5))
 
                     Button { viewModel.hideAllCategories(for: currentType) } label: {
-                        Label("Ocultar todas", systemImage: "eye.slash")
+                        Label(lang.currentLanguage == .en ? "Hide all" : "Ocultar todas", systemImage: "eye.slash")
                             .font(.caption.weight(.medium))
                     }
                     .buttonStyle(.plain)
@@ -156,7 +158,7 @@ struct CategoryManagerView: View {
 
                     Spacer()
 
-                    Text("\(serverSections.count) del servidor")
+                    Text("\(serverSections.count) \(lang.currentLanguage == .en ? "from server" : "del servidor")")
                         .font(.caption)
                         .foregroundStyle(.white.opacity(0.3))
                 }
@@ -181,14 +183,14 @@ struct CategoryManagerView: View {
                                     Text(section.title)
                                         .font(.subheadline.weight(.medium))
                                         .foregroundStyle(.white.opacity(isHidden ? 0.35 : 1.0))
-                                    Text("\(section.items.count) elementos")
+                                    Text("\(section.items.count) \(lang.currentLanguage == .en ? "items" : "elementos")")
                                         .font(.caption)
                                         .foregroundStyle(.white.opacity(0.25))
                                 }
 
                                 Spacer()
 
-                                Text(isHidden ? "Oculta" : "Visible")
+                                Text(isHidden ? lang.t(.catMgrHideBtn) : lang.t(.catMgrShowBtn))
                                     .font(.caption2.weight(.semibold))
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 3)
@@ -217,12 +219,12 @@ struct CategoryManagerView: View {
         VStack(spacing: 0) {
             // Add button
             HStack {
-                Text("Agrupa categorías del servidor bajo un nombre personalizado.")
+                Text(lang.currentLanguage == .en ? "Group server categories under a custom name." : "Agrupa categorías del servidor bajo un nombre personalizado.")
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.4))
                 Spacer()
                 Button { showingAddCustom = true } label: {
-                    Label("Nueva", systemImage: "plus.circle.fill")
+                    Label(lang.currentLanguage == .en ? "New" : "Nueva", systemImage: "plus.circle.fill")
                         .font(.subheadline.weight(.semibold))
                         .padding(.horizontal, 14)
                         .padding(.vertical, 6)
@@ -241,10 +243,10 @@ struct CategoryManagerView: View {
                     Image(systemName: "folder.badge.plus")
                         .font(.system(size: 44))
                         .foregroundStyle(.white.opacity(0.12))
-                    Text("Sin categorías personalizadas")
+                    Text(lang.t(.catMgrNoCustom))
                         .font(.headline)
                         .foregroundStyle(.white.opacity(0.25))
-                    Text("Las personalizadas aparecen primero en el dashboard.")
+                    Text(lang.currentLanguage == .en ? "Custom categories appear first on the dashboard." : "Las personalizadas aparecen primero en el dashboard.")
                         .font(.caption)
                         .foregroundStyle(.white.opacity(0.15))
                     Spacer()
@@ -330,6 +332,7 @@ struct CustomCategoryEditorView: View {
     }
 
     @EnvironmentObject private var viewModel: AppViewModel
+    @EnvironmentObject private var lang: LanguageManager
     @Environment(\.dismiss) private var dismiss
 
     let mode: Mode
@@ -360,7 +363,7 @@ struct CustomCategoryEditorView: View {
 
             VStack(spacing: 0) {
                 HStack {
-                    Text(isEditing ? "Editar categoría" : "Nueva categoría")
+                    Text(isEditing ? (lang.currentLanguage == .en ? "Edit Category" : "Editar categoría") : (lang.currentLanguage == .en ? "New Category" : "Nueva categoría"))
                         .font(.system(size: 20, weight: .bold, design: .rounded))
                         .foregroundStyle(.white)
                     Spacer()
@@ -379,8 +382,8 @@ struct CustomCategoryEditorView: View {
                     VStack(alignment: .leading, spacing: 18) {
                         // Name
                         VStack(alignment: .leading, spacing: 6) {
-                            Text("Nombre").font(.subheadline.weight(.semibold)).foregroundStyle(.white.opacity(0.7))
-                            TextField("Ej: Deportes, Cine, Infantil…", text: $name)
+                            Text(lang.currentLanguage == .en ? "Name" : "Nombre").font(.subheadline.weight(.semibold)).foregroundStyle(.white.opacity(0.7))
+                            TextField(lang.currentLanguage == .en ? "e.g. Sports, Kids, Cinema…" : "Ej: Deportes, Cine, Infantil…", text: $name)
                                 .textFieldStyle(.plain)
                                 .font(.body)
                                 .padding(.horizontal, 14)
@@ -394,26 +397,26 @@ struct CustomCategoryEditorView: View {
 
                         // Server categories multi-select
                         VStack(alignment: .leading, spacing: 6) {
-                            Text("Categorías (\(selectedIds.count) seleccionadas)")
+                            Text(lang.currentLanguage == .en ? "Categories (\(selectedIds.count) selected)" : "Categorías (\(selectedIds.count) seleccionadas)")
                                 .font(.subheadline.weight(.semibold))
                                 .foregroundStyle(.white.opacity(0.7))
 
                             HStack(spacing: 8) {
                                 Image(systemName: "magnifyingglass")
                                     .foregroundStyle(.white.opacity(0.4)).font(.system(size: 12))
-                                TextField("Buscar…", text: $searchText)
+                                TextField(lang.t(.searchPlaceholder), text: $searchText)
                                     .textFieldStyle(.plain).font(.system(size: 13)).foregroundStyle(.white)
                             }
                             .padding(.horizontal, 12).padding(.vertical, 7)
                             .background(Color.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 8))
 
                             HStack(spacing: 12) {
-                                Button("Seleccionar todo") {
+                                Button(lang.currentLanguage == .en ? "Select all" : "Seleccionar todo") {
                                     for s in filteredServerSections {
                                         selectedIds.insert(extractRawId(from: s.id))
                                     }
                                 }.font(.caption.weight(.medium)).foregroundStyle(Color(red: 0.4, green: 0.55, blue: 1.0))
-                                Button("Deseleccionar") {
+                                Button(lang.currentLanguage == .en ? "Deselect" : "Deseleccionar") {
                                     if searchText.isEmpty { selectedIds.removeAll() }
                                     else { for s in filteredServerSections { selectedIds.remove(extractRawId(from: s.id)) } }
                                 }.font(.caption.weight(.medium)).foregroundStyle(.white.opacity(0.4))
@@ -475,7 +478,7 @@ struct CustomCategoryEditorView: View {
                 HStack {
                     Spacer()
                     Button { save(); dismiss() } label: {
-                        Text(isEditing ? "Guardar" : "Crear")
+                        Text(isEditing ? (lang.currentLanguage == .en ? "Save" : "Guardar") : (lang.currentLanguage == .en ? "Create" : "Crear"))
                             .font(.headline)
                             .padding(.horizontal, 24).padding(.vertical, 10)
                     }

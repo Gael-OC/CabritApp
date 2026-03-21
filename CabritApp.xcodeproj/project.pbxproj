@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		9386C5F22F4EC50C00EB3975 /* CabritApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CabritApp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9386C5F22F4EC50C00EB3975 /* CabritApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CabritApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		000000000000000000000001 /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9386C5F42F4EC50C00EB3975 /* CabritApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "CabritApp";
+			path = CabritApp;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -63,10 +64,10 @@
 			fileSystemSynchronizedGroups = (
 				9386C5F42F4EC50C00EB3975 /* CabritApp */,
 			);
-			name = "CabritApp";
+			name = CabritApp;
 			packageProductDependencies = (
 			);
-			productName = "CabritApp";
+			productName = CabritApp;
 			productReference = 9386C5F22F4EC50C00EB3975 /* CabritApp.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -248,10 +249,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "CabritApp/CabritApp.entitlements";
+				CODE_SIGN_ENTITLEMENTS = CabritApp/CabritApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -264,7 +265,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.cabritapp.player";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cabritapp.player;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -281,10 +282,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "CabritApp/CabritApp.entitlements";
+				CODE_SIGN_ENTITLEMENTS = CabritApp/CabritApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -297,7 +298,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.cabritapp.player";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cabritapp.player;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
