@@ -23,6 +23,9 @@ Package.resolved
 # Old prototype (local only)
 revisar/
 
+# Local DMG build folder
+dmg_staging/
+
 # Misc
 *.swp
 *~
