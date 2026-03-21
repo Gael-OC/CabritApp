@@ -62,7 +62,7 @@ final class ImageCache {
         do {
             let (data, _) = try await session.data(from: url)
             guard let img = NSImage(data: data) else { return nil }
-            let downscaled = Self.downscale(img, maxDimension: 300)
+            let downscaled = Self.downscale(img, maxDimension: 600)
             store(downscaled, for: url)
             return downscaled
         } catch {

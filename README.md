@@ -59,6 +59,11 @@ CabritApp/
 └── CachedAsyncImage.swift      # Image cache
 ```
 
+### Technical Notes
+
+- **SSL Certificate Validation**: CabritApp bypasses SSL certificate verification for all connections (`TrustAllCertsDelegate`). This is intentional — many IPTV servers use self-signed or expired certificates and would otherwise fail to connect. This means traffic to an IPTV server is **not authenticated by a trusted CA**, which is an acceptable tradeoff for a media player connecting to a user-provided server.
+- **Credentials Storage**: Username, password, and server URL are stored in `UserDefaults` (not in Keychain). This avoids macOS password prompts when the app is not notarized. The stored data is local to the Mac and protected by the OS user account.
+
 ### Disclaimer
 
 This application is a generic media player. It does not include, provide, or distribute any media content, playlists, or streaming URLs. The user is solely responsible for the content they access. This software is provided "as is", without warranty of any kind. The developer is not affiliated with any IPTV service provider.
@@ -100,6 +105,11 @@ open CabritApp.xcodeproj
 ```
 
 Selecciona "My Mac" como destino y presiona Cmd+R.
+
+### Notas técnicas
+
+- **Certificados SSL**: CabritApp omite la verificación de certificados SSL (`TrustAllCertsDelegate`) de forma intencional. Muchos servidores IPTV usan certificados autofirmados o vencidos, y sin este bypass la conexión fallaría. Esto es un compromiso aceptable para un reproductor que se conecta a servidores provistos por el usuario.
+- **Almacenamiento de credenciales**: El usuario, contraseña y URL del servidor se guardan en `UserDefaults` (no en Keychain) para evitar popups de macOS en apps no notarizadas. Los datos quedan en el Mac y están protegidos por la cuenta del sistema operativo.
 
 ### Aviso legal
 

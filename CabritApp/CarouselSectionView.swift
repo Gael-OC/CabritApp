@@ -11,11 +11,13 @@ struct CarouselSectionView: View {
     var onSeeAll:          (() -> Void)?
     var onSelect:          (MediaItem) -> Void
 
+    @EnvironmentObject private var lang: LanguageManager
     @State private var hoveredItemId: String?
     @State private var isHoveringCarousel = false
     @State private var scrollPosition: Int = 0  // index of first visible item
 
-    private var items: [MediaItem] { Array(section.items.prefix(25)) }
+    private let maxCarouselItems = 25
+    private var items: [MediaItem] { Array(section.items.prefix(maxCarouselItems)) }
     private let pageSize = 4  // how many items to jump per arrow click
 
     var body: some View {
@@ -37,7 +39,7 @@ struct CarouselSectionView: View {
                 if let onSeeAll, section.items.count > 3 {
                     Button { onSeeAll() } label: {
                         HStack(spacing: 4) {
-                            Text("Ver todo")
+                            Text(lang.t(.seeAll))
                             Image(systemName: "chevron.right")
                         }
                         .font(.subheadline.weight(.medium))
@@ -53,7 +55,7 @@ struct CarouselSectionView: View {
                             .foregroundStyle(.white.opacity(0.35))
                     }
                     .buttonStyle(.plain)
-                    .help("Ocultar '\(section.title)'")
+                    .help("\(lang.t(.hideCategory)) '\(section.title)'")
                 }
             }
 
@@ -80,7 +82,7 @@ struct CarouselSectionView: View {
                                         onToggleFavorite(item)
                                     } label: {
                                         Label(
-                                            isFavorite(item) ? "Quitar de favoritos" : "Añadir a favoritos",
+                                            isFavorite(item) ? lang.t(.btnRemoveFav) : lang.t(.btnAddFav),
                                             systemImage: isFavorite(item) ? "star.slash" : "star"
                                         )
                                     }
@@ -89,7 +91,7 @@ struct CarouselSectionView: View {
                                         Button(role: .destructive) {
                                             onDeleteCategory(section.id)
                                         } label: {
-                                            Label("Ocultar '\(section.title)'", systemImage: "eye.slash")
+                                            Label("\(lang.t(.hideCategory)) '\(section.title)'", systemImage: "eye.slash")
                                         }
                                     }
                                 }

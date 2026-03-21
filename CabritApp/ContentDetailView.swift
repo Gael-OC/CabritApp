@@ -200,7 +200,7 @@ struct ContentDetailView: View {
                 }
             }
             if isSeries {
-                Text("\(viewModel.episodes.count) \(lang.currentLanguage == .en ? "episodes" : "episodios")")
+                Text("\(viewModel.episodes.count) \(lang.t(.detailEpisodes))")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.white.opacity(0.5))
             }
@@ -301,7 +301,9 @@ struct ContentDetailView: View {
                         }
                     } label: {
                         HStack {
-                            Text(seasons.count == 1 ? (lang.currentLanguage == .en ? "Episodes" : "Episodios") : (lang.currentLanguage == .en ? "Season \(season)" : "Temporada \(season)"))
+                            Text(seasons.count == 1
+                            ? lang.t(.detailEpisodes).capitalized
+                            : "\(lang.t(.detailSeason)) \(season)")
                                 .font(.subheadline.weight(.semibold))
                                 .foregroundStyle(.white.opacity(0.8))
                             Spacer()
@@ -324,7 +326,7 @@ struct ContentDetailView: View {
             HStack {
                 Spacer()
                 ProgressView().scaleEffect(0.8).tint(.white)
-                Text(lang.currentLanguage == .en ? "Loading info…" : "Cargando info…")
+                Text(lang.t(.detailLoadingInfo))
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.4))
                 Spacer()

@@ -89,6 +89,13 @@ enum L10nKey: String, Hashable {
     case detailDirector
     case detailGenre
     case detailTrailer
+    case detailLoadingInfo
+    case detailEpisodes
+    case detailSeason
+    
+    // Carousel / Section
+    case seeAll
+    case hideCategory
     
     // Errors
     case errInvalidURL
@@ -164,6 +171,12 @@ private let translations: [AppLanguage: [L10nKey: String]] = [
         .detailDirector: "Director",
         .detailGenre: "Género",
         .detailTrailer: "Ver Trailer",
+        .detailLoadingInfo: "Cargando info…",
+        .detailEpisodes: "episodios",
+        .detailSeason: "Temporada",
+        
+        .seeAll: "Ver todo",
+        .hideCategory: "Ocultar",
         
         // Errors
         .errInvalidURL: "La URL del servidor no es válida. Usa http(s)://host[:puerto]",
@@ -235,6 +248,12 @@ private let translations: [AppLanguage: [L10nKey: String]] = [
         .detailDirector: "Director",
         .detailGenre: "Genre",
         .detailTrailer: "Watch Trailer",
+        .detailLoadingInfo: "Loading info…",
+        .detailEpisodes: "episodes",
+        .detailSeason: "Season",
+        
+        .seeAll: "See All",
+        .hideCategory: "Hide",
         
         // Errors
         .errInvalidURL: "Invalid server URL. Use http(s)://host[:port]",

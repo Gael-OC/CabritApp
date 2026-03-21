@@ -17,7 +17,14 @@ final class AppViewModel: ObservableObject {
     @Published var credentials         = XtreamCredentials()
     @Published var rememberCredentials = true
     @Published var selectedType:       MediaType   = .live {
-        didSet { UserDefaults.standard.set(selectedType.rawValue, forKey: "last_selected_type") }
+        didSet {
+            UserDefaults.standard.set(selectedType.rawValue, forKey: "last_selected_type")
+            // Reset cached hero when switching tabs so each tab has its own hero
+            cachedHeroItem = nil
+            refreshHeroIfNeeded(for: selectedType)
+            // Recompute available filters for new type
+            availableFilters = computeFilters(for: selectedType)
+        }
     }
     @Published var searchText:         String      = ""
     @Published var cachedSearchResults: [MediaItem] = []   // cached, updated via debounce
@@ -35,8 +42,9 @@ final class AppViewModel: ObservableObject {
 
     // Track which types have been loaded at least once
     private var loadedTypes:           Set<MediaType> = []
-    private var loadingTasks:          [MediaType: Task<Void, Never>] = [:]
-    private var _cachedFilters:        [MediaType: [String]] = [:]
+    private var loadingTasks:          [MediaType: Task<Void, Never>] = []
+
+    @Published var availableFilters:   [String] = []   // computed when sections load
 
     @Published var selectedPlayable:   PlayableContent?
     @Published var selectedSeries:     MediaItem?
@@ -53,6 +61,7 @@ final class AppViewModel: ObservableObject {
     @Published var showCategoryManager = false
     @Published var activeFilters:      Set<String>      = []
     @Published var scrollToCategoryId: String?
+    @Published private(set) var cachedHeroItem: MediaItem?  // stable hero to avoid flicker
 
     private let api              = XtreamAPIClient()
     private let credentialsStore = CredentialsStore()
@@ -139,18 +148,14 @@ final class AppViewModel: ObservableObject {
             if rememberCredentials { credentialsStore.save(creds) } else { credentialsStore.clear() }
             AppPreferences(rememberCredentials: rememberCredentials).save()
 
-            // Preload all 3 types with progress
+            // Cargar los 3 tipos al mismo tiempo
             loadingProgress = 0.15
-            loadingStatus = "Cargando TV en vivo…"
-            await loadType(.live)
-            loadingProgress = 0.45
-
-            loadingStatus = "Cargando películas…"
-            await loadType(.vod)
-            loadingProgress = 0.75
-
-            loadingStatus = "Cargando series…"
-            await loadType(.series)
+            loadingStatus = "Cargando contenido…"
+            await withTaskGroup(of: Void.self) { group in
+                group.addTask { await self.loadType(.live) }
+                group.addTask { await self.loadType(.vod) }
+                group.addTask { await self.loadType(.series) }
+            }
             loadingProgress = 1.0
             loadingStatus = "Listo!"
 
@@ -195,7 +200,7 @@ final class AppViewModel: ObservableObject {
     func reloadCurrentType() async {
         loadingTasks[selectedType]?.cancel()
         loadedTypes.remove(selectedType)
-        _cachedFilters[selectedType] = nil  // invalidate filter cache
+        availableFilters = []  // clear filters while reloading
         let type = selectedType
         loadingTasks[type] = Task {
             await loadType(type)
@@ -246,6 +251,37 @@ final class AppViewModel: ObservableObject {
         case .live:   liveSections   = sections
         case .vod:    vodSections    = sections
         case .series: seriesSections = sections
+        }
+        // Update filters for this type when its data arrives
+        if type == selectedType {
+            availableFilters = computeFilters(for: type)
+        }
+        // Refresh cached hero whenever sections change
+        refreshHeroIfNeeded(for: type)
+    }
+
+    private func refreshHeroIfNeeded(for type: MediaType) {
+        // Only refresh if current type matches or hero is nil
+        guard type == selectedType || cachedHeroItem == nil else { return }
+        let sections = allServerSections(for: selectedType)
+        let allItems = sections.flatMap { $0.items }
+        guard !allItems.isEmpty else { return }
+
+        // 1. Last watched of this type
+        let typeRecents = continueWatching.filter { $0.type == selectedType }
+        if let recent = typeRecents.first,
+           let match = allItems.first(where: { $0.title == recent.title || recent.urlString.contains("\($0.streamId)") }) {
+            cachedHeroItem = match; return
+        }
+        // 2. Random favorite (only set once, stays stable)
+        let typeFavs = favorites.filter { $0.type == selectedType }
+        if let fav = typeFavs.randomElement(),
+           let match = allItems.first(where: { $0.id == fav.id }) {
+            cachedHeroItem = match; return
+        }
+        // 3. Random item — picked once, stays stable
+        if cachedHeroItem == nil {
+            cachedHeroItem = sections.randomElement()?.items.randomElement() ?? allItems.first
         }
     }
 
@@ -388,25 +424,23 @@ final class AppViewModel: ObservableObject {
     /// Known quality/tag patterns to detect in item names
     private static let knownTags = ["4K", "UHD", "FHD", "FULL HD", "HD", "SD", "H265", "HEVC", "LATINO", "ESPAÑOL", "ENGLISH"]
 
-    /// Detect available filter tags from current sections' item names (cached per type).
-    var availableFilters: [String] {
-        if let cached = _cachedFilters[selectedType] { return cached }
-        let sections = allCurrentSections
+    private func computeFilters(for type: MediaType) -> [String] {
+        let sections: [HomeSection]
+        switch type {
+        case .live:   sections = liveSections
+        case .vod:    sections = vodSections
+        case .series: sections = seriesSections
+        }
         var found: Set<String> = []
-        let upperTags = Self.knownTags
         for section in sections {
             for item in section.items {
                 let upper = item.title.uppercased()
-                for tag in upperTags {
-                    if upper.contains(tag) {
-                        found.insert(tag)
-                    }
+                for tag in Self.knownTags where upper.contains(tag) {
+                    found.insert(tag)
                 }
             }
         }
-        let result = Self.knownTags.filter { found.contains($0) }
-        _cachedFilters[selectedType] = result
-        return result
+        return Self.knownTags.filter { found.contains($0) }
     }
 
     /// Toggle a filter tag on/off.
@@ -451,37 +485,8 @@ final class AppViewModel: ObservableObject {
         }
     }
 
-    /// Smart hero: last-watched > random favorite > random item
-    var heroItem: MediaItem? {
-        let sections = allCurrentSections
-        let allItems = sections.flatMap { $0.items }
-        guard !allItems.isEmpty else { return nil }
-
-        // 1. Last watched of this type (match by streamId for reliability)
-        let typeRecents = continueWatching.filter { $0.type == selectedType }
-        if let recent = typeRecents.first {
-            if let match = allItems.first(where: {
-                $0.title == recent.title || recent.urlString.contains("\($0.streamId)")
-            }) {
-                return match
-            }
-        }
-
-        // 2. Random favorite of this type
-        let typeFavs = favorites.filter { $0.type == selectedType }
-        if let fav = typeFavs.randomElement() {
-            if let match = allItems.first(where: { $0.id == fav.id }) {
-                return match
-            }
-        }
-
-        // 3. Random item from a random section
-        if let section = sections.randomElement(), let item = section.items.randomElement() {
-            return item
-        }
-
-        return allItems.first
-    }
+    /// Smart hero: last-watched > random favorite > random item (stable, set once per type load)
+    var heroItem: MediaItem? { cachedHeroItem }
 
     // MARK: - Playback
 
